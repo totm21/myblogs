@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Dao.UserDao" >
+
+     <select id="getUser" parameterType="user" resultType="user">
+	    select * from user where id=#{id} and password=#{password}
+    </select>  
+    
+      <select id="findUser" parameterType="user" resultType="user">
+	    select * from user where id=#{id}
+    </select>  
+      
+    <insert id="addUser" parameterType="user">
+	   insert into user(id,password,name,photo,motto,value)
+        value(#{id},#{password},#{name},#{photo},#{motto},#{value});
+	</insert>
+     
+     <select id="getUsers" resultType="user">
+	    select * from user
+    </select>   
+      
+    <insert id="setUser" parameterType="user">
+		UPDATE user SET name=#{name},password=#{password},value=#{value} where id=#{id}
+	</insert>
+    
+	<delete id="delUser" parameterType="String">
+	    delete from user where id=#{id}
+	</delete>
+	
+	<select id="findUsers_id" resultType="user" parameterType="user">
+	    select * from user where id like #{id}
+    </select> 
+    
+    <select id="findUsers_name" resultType="user" parameterType="user">
+	    select * from user where name like #{id}
+    </select> 
+</mapper>

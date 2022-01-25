@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Dao.ArticleDao" >
+
+	<insert id="addart" parameterType="article">
+	   insert into article(id,title,intro,photo,content,time,read_t,user_id,publish,version)
+        value(#{id},#{title},#{intro},#{photo},#{content},#{time},#{read_t},#{user_id},0,#{version});
+	</insert>
+	
+	<insert id="updataart" parameterType="article">
+	   UPDATE article SET title=#{title},intro=#{intro},photo=#{photo},content=#{content},time=#{time},read_t=#{read_t},user_id=#{user_id},publish=#{publish},version=#{version} where id=#{id};
+	</insert>
+
+	<select id="findarts_1" parameterType="tint" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id order by time desc limit #{a},#{b} ;
+    </select>
+    
+    <select id="findarts_2" parameterType="tint" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where article.id in (select art_id from connection where cate_id=#{c}) order by time desc limit #{a},#{b} ;
+    </select>  
+
+	<select id="findarts_3" parameterType="tint" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where article.title like #{c} order by time desc limit #{a},#{b} ;
+    </select>
+
+	<select id="findart" parameterType="String" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where article.id=#{id};
+    </select> 
+    
+    <select id="findarts" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id order by time desc;
+    </select> 
+    
+     <select id="findarts_low" parameterType="String" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where user_id=#{id} order by time desc;
+    </select> 
+    
+	<insert id="setart_pub_1" parameterType="String">
+		UPDATE article SET publish=1 where id=#{id};
+	</insert>
+	
+	<insert id="setart_pub_0" parameterType="String">
+		UPDATE article SET publish=0 where id=#{id};
+	</insert>
+
+
+	<delete id="delart" parameterType="String">
+	    delete from article where id=#{id}
+	</delete>
+	
+	<delete id="delart_con" parameterType="String">
+	    delete from connection where art_id=#{id}
+	</delete>
+	
+	<delete id="delcate_con" parameterType="String">
+	    delete from connection where cate_id=#{id}
+	</delete>
+	
+	<insert id="setaer" parameterType="article">
+		UPDATE article SET title=#{title},intro=#{intro} where id=#{id};
+	</insert>
+	
+	
+	<insert id="setuser_1" parameterType="User">
+		UPDATE user SET name=#{name},motto=#{motto},password=#{password} where id=#{id};
+	</insert>
+	
+	<select id="category" parameterType="String" resultType="categoty">
+	    select * from categoty where id in (select cate_id from connection where art_id=#{id});
+    </select> 
+	
+	<select id="find_categorys" resultType="categoty">
+	 	select * from categoty;
+	</select>
+
+	<insert id="add_categorys" parameterType="categoty">
+	   insert into categoty(id,content)
+        value(#{id},#{content});
+	</insert>
+	<select id="find_category" parameterType="string" resultType="categoty">
+	 	select * from categoty where content=#{content}
+	</select>
+	
+	<delete id="delcate" parameterType="String">
+	    delete from categoty where id=#{id}
+	</delete>
+	
+	<insert id="set_category" parameterType="categoty">
+		UPDATE categoty SET content=#{content} where id=#{id};
+	</insert>
+	
+	<insert id="add_conn" parameterType="pairt">
+		insert into connection(cate_id,art_id) value(#{cate_id},#{art_id});
+	</insert>
+	
+	<select id="find_conn" parameterType="pairt" resultType="pairt">
+	 	select * from connection where cate_id=#{cate_id} and art_id=#{art_id};
+	</select>
+	
+	<delete id="del_conn" parameterType="pairt">
+	    delete from connection where cate_id=#{cate_id} and art_id=#{art_id};
+	</delete>
+	
+
+</mapper>
