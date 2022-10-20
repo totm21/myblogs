@@ -5,8 +5,17 @@
 
 						<!-- Search -->
 							<section>
-								<form class="search" method="get" action="#">
+								<form class="search" method="get" action="${pageContext.request.contextPath}/find_art_like_kind.action">
 									<input type="text" name="query" placeholder="Search" />
+									<div>
+					      			<select name="type_id" id="select" style="height:2.9em;">
+					    				<option  selected="selected" align="center">=关键字种类=</option>
+					      					<option value="2">标题</option>
+					      					<option value="3">作者</option>
+					      					<option value="4">标题(准确)</option>
+					      					<option value="5">作者(准确)</option>
+									</select>
+									</div>
 								</form>
 							</section>
 

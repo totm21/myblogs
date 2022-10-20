@@ -41,7 +41,7 @@ $(function () {
 					<header id="header">
 						<h1><a href="${pageContext.request.contextPath}/main.action">Home</a></h1>
 						<nav class="links">
-							<ul>
+							<ul style="height: 100%;" >
 								<c:forEach items="${list_cate}" var="i">
 									<li><a href="${pageContext.request.contextPath}/main_kinds.action?id=${i.id}">${i.content}</a></li>
 								</c:forEach>

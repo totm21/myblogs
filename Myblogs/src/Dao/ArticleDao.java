@@ -24,6 +24,7 @@ public interface ArticleDao {
 	public List<Article> findarts_2(tint n);
 	
 	public List<Article> findarts_3(tint n);
+	public List<Article> findarts_4(tint n);
 	
 	public void setart_pub_1(String id);
 	public void setart_pub_0(String id);

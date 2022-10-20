@@ -44,6 +44,11 @@ public class ArticleService {
 		return articleDao.findarts_3(n);
 	}
 	
+	public List<Article> findart_4(tint n)
+	{
+		return articleDao.findarts_4(n);
+	}
+	
 	public List<Article> findarts()
 	{
 		return articleDao.findarts();

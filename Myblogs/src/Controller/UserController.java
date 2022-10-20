@@ -741,6 +741,136 @@ public class UserController {
     }
 	
 	
+	@RequestMapping(value = "find_art_like_kind.action", method = RequestMethod.GET)
+    public String find_art_like_kind(String query,int type_id,Model model,HttpServletRequest request,HttpServletResponse response,HttpSession session) throws IOException {
+		User user=(User)session.getAttribute("user");
+		List<categoty> list_c=articleService.find_categorys();
+		model.addAttribute("list_cate", list_c);
+		if(user==null)
+		{
+			model.addAttribute("LOG_IN","LOG IN");
+			model.addAttribute("IMAGE","/page2/images/logo.jpg");//头像位置
+			model.addAttribute("MASTER", "none");
+			//${pageContext.request.contextPath}
+			model.addAttribute("MOTTO","There is no royal road to learning");
+		}
+		else
+		{
+			if(user.getValue()==1)
+				model.addAttribute("MASTER", "inline");
+			else
+				model.addAttribute("MASTER", "none");
+			model.addAttribute("LOG_IN",user.getName());
+			model.addAttribute("IMAGE",user.getPhoto());//头像位置
+			model.addAttribute("MOTTO",user.getMotto());
+		}
+		String page=(String)session.getAttribute("page");
+		if(page==null)
+		{
+			Integer l=0;
+			page=l.toString();
+			session.setAttribute("page", page);
+		}
+		if(page==null)
+		{
+			page="0";
+		}
+		if(Integer.valueOf(page)<0)
+		{
+			page="0";
+		}
+		tint tint1=new tint(Integer.valueOf(page)*3,Integer.valueOf(page)*3+12);
+		tint1.c="%"+query+"%";
+		System.out.println(tint1.c);
+		List<Article> list;
+		if(type_id == 3)
+		{
+			list=articleService.findart_4(tint1);
+		}
+		else if(type_id == 4)
+		{
+			tint1.c=query;
+			list=articleService.findart_3(tint1);
+		}
+		else if(type_id == 5)
+		{
+			tint1.c=query;
+			list=articleService.findart_4(tint1);
+		}
+		else 
+		{
+			list=articleService.findart_3(tint1);
+		}
+		System.out.println(list.size());
+		
+		while(list.size()==0&&!page.equals("0"))
+		{
+			page=((Integer)(Integer.valueOf(page)-1)).toString();
+			list=articleService.findart_1(new tint(Integer.valueOf(page)*3,Integer.valueOf(page)*3+12));
+		}
+		session.setAttribute("page", page);
+		int len=list.size();
+		List<Article> list_1=new ArrayList<Article>();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		for(int i=0;i<len&&i<3;i++)
+		{
+			list.get(i).setTti(formatter.format(new Date(list.get(i).getTime().getTime())));
+			String path=request.getServletContext().getRealPath(list.get(i).getContent()); 
+			BufferedReader bw = new BufferedReader(new FileReader(path));
+			String txt;
+			while((txt=bw.readLine())!=null) {
+				if(list.get(i).getTxt()!=null)
+					list.get(i).setTxt(list.get(i).getTxt()+txt+'\n');
+				else
+					list.get(i).setTxt(txt+'\n');
+				
+			}
+			list_1.add(list.get(i));
+		}
+		model.addAttribute("LIST_1", list_1);
+		
+		
+		List<Article> list_2=new ArrayList<Article>();
+		for(int i=3;i<len&&i<7;i++)
+		{
+			list.get(i).setTti(formatter.format(new Date(list.get(i).getTime().getTime())));
+			String path=request.getServletContext().getRealPath(list.get(i).getContent()); 
+			BufferedReader bw = new BufferedReader(new FileReader(path));
+			String txt;
+			while((txt=bw.readLine())!=null) {
+				if(list.get(i).getTxt()!=null)
+					list.get(i).setTxt(list.get(i).getTxt()+txt+'\n');
+				else
+					list.get(i).setTxt(txt+'\n');
+				
+			}
+			list_2.add(list.get(i));
+		}
+		model.addAttribute("LIST_2", list_2);
+		
+		
+		List<Article> list_3=new ArrayList<Article>();
+		for(int i=7;i<len&&i<12;i++)
+		{
+			list.get(i).setTti(formatter.format(new Date(list.get(i).getTime().getTime())));
+			String path=request.getServletContext().getRealPath(list.get(i).getContent()); 
+			BufferedReader bw = new BufferedReader(new FileReader(path));
+			String txt;
+			while((txt=bw.readLine())!=null) {
+				if(list.get(i).getTxt()!=null)
+					list.get(i).setTxt(list.get(i).getTxt()+txt+'\n');
+				else
+					list.get(i).setTxt(txt+'\n');
+				
+			}
+			list_3.add(list.get(i));
+		}
+		model.addAttribute("LIST_3", list_3);
+		
+		check_root(model, session, request);	
+		return "main";
+    }
+	
 	
 	
 	@RequestMapping(value = "/master/save_art_main.action", method = RequestMethod.POST)
@@ -988,6 +1118,11 @@ public class UserController {
     public String updata_alls(Model model,HttpServletRequest request,HttpServletResponse response,HttpSession session) throws IOException, InterruptedException {
 		Article article=(Article)session.getAttribute("art_new");
 		Article article_old=(Article)session.getAttribute("art_old");
+		String flag =(String)session.getAttribute("changes_flag");
+		if(flag.equals("true"))
+		{
+			session.removeAttribute("changes_flag");
+		}
 		System.out.println(article.getContent());
 		
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(request.getServletContext().getRealPath(article.getContent())));
@@ -1025,6 +1160,7 @@ public class UserController {
 		//System.out.println(index);
 		Article article=(Article)session.getAttribute("art_new");
 		Article article_old=(Article)session.getAttribute("art_old");
+		System.out.println(article.getContents().size());
 		date_art date_art=new date_art();
 		date_art.setImage("/texts/images/root.jpg");
 		article.getContents().add(index,date_art);
@@ -1033,6 +1169,7 @@ public class UserController {
 			article_old.getContents().add(index,date_art);
 		}
 		session.setAttribute("art_new", article);
+		System.out.println(article.getContents().size());
 		return "true";
 	}
 	

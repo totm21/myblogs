@@ -21,6 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// 获取请求的URL
 		String url = request.getRequestURI();
+		System.out.println(url.toString());
 		HttpSession session = request.getSession();
 		Article article=(Article)session.getAttribute("art_new");
 		Article article_old=(Article)session.getAttribute("art_old");
@@ -47,8 +48,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 					}
 				}
 			}
-			System.out.println(url.toString());
-			
 			if(article.isDelete_flag()){
 				if(!article.getPhoto().equals("/texts/images/root.jpg")){
 					path=request.getServletContext().getRealPath(article.getPhoto()); 
@@ -69,7 +68,6 @@ public class LoginInterceptor implements HandlerInterceptor {
 			//删除当前数据
 			}
 		}
-		
 		User user = (User) session.getAttribute("user");
 		if(user==null)
 		{

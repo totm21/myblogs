@@ -310,25 +310,36 @@ public class ComSkipController {
 	
 	@RequestMapping(value = "/master/changes_art.action", method = RequestMethod.GET)
 	public String changes_art(Model model,HttpSession session,HttpServletRequest request,String id) throws IOException, ClassNotFoundException{
-		List<categoty> list_c=articleService.find_categorys();
-		model.addAttribute("list_cate", list_c);
-		
-		Article article1=articleService.findart(id);
-		
-		String path=request.getServletContext().getRealPath(article1.getContent()); 
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
-        Article article = (Article) ois.readObject();
-		article.setPhoto_u(article1.getPhoto_u());
-		article.setName(article1.getName());
-		
-		
-		model.addAttribute("art", article);
-		session.setAttribute("art_new", article);  //最后需要储存的信息	
-		
-		ois = new ObjectInputStream(new FileInputStream(path));
-		Article article_old = (Article) ois.readObject();
-        ois.close();
-		session.setAttribute("art_old", article_old);  //副本信息,转储的时候用
+		Article article=(Article)session.getAttribute("art_new");
+		Article article_old=(Article)session.getAttribute("art_old");
+		String flag =(String)session.getAttribute("changes_flag");
+		if(flag==null || !flag.equals("true")){
+			System.out.println("CZC");
+			List<categoty> list_c=articleService.find_categorys();
+			model.addAttribute("list_cate", list_c);
+			
+			Article article1=articleService.findart(id);
+			
+			String path=request.getServletContext().getRealPath(article1.getContent()); 
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
+	        article = (Article) ois.readObject();
+			article.setPhoto_u(article1.getPhoto_u());
+			article.setName(article1.getName());
+			
+			
+			model.addAttribute("art", article);
+			session.setAttribute("art_new", article);  //最后需要储存的信息	
+			
+			ois = new ObjectInputStream(new FileInputStream(path));
+			article_old = (Article) ois.readObject();
+	        ois.close();
+			session.setAttribute("art_old", article_old);  //副本信息,转储的时候用
+			session.setAttribute("changes_flag", "true");
+		}
+		else
+		{
+			model.addAttribute("art", article);
+		}
 		check_root(model, session, request);
 		return "master/changes";
 	}

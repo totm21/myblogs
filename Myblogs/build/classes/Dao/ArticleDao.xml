@@ -23,6 +23,10 @@
 	<select id="findarts_3" parameterType="tint" resultType="article">
 	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where article.title like #{c} order by time desc limit #{a},#{b} ;
     </select>
+    
+    <select id="findarts_4" parameterType="tint" resultType="article">
+	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where user.name like #{c} order by time desc limit #{a},#{b} ;
+    </select>
 
 	<select id="findart" parameterType="String" resultType="article">
 	    select article.id as id,article.title as title,article.intro as intro,article.photo as photo,article.content as content,article.time as time,article.read_t as read_t,article.user_id as user_id,article.publish as publish,user.name as name,user.photo as photo_u from article inner join user on article.user_id=user.id where article.id=#{id};

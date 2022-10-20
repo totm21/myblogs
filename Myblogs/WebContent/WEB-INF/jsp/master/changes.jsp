@@ -9,7 +9,7 @@
 -->
 <html>
 	<head>
-		<title>Write Article</title>
+		<title>Changes Article</title>
 		<link href="${pageContext.request.contextPath}/page2/images/title.ico" rel="icon" type="image/x-ico">
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -60,7 +60,7 @@ textarea {
 		
 		function refresh()
 		{
-			 $("#little_div").load(location.href+" #little_div>*",""); 
+			 $("#little_div").load(location.href+" #little_div>*","");
 		}
 		
 		function check_ajax()

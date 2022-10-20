@@ -37,10 +37,10 @@
 						<p>There is no royal road to learning</p>
 						<nav>
 							<ul>
-								<li><a href="#" class="icon brands fa-envira"><span class="label">Twitter</span></a></li>
+								<li><a href="tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2781343172&website=www.oicqzone.com" class="icon brands fa-qq"><span class="label">Twitter</span></a></li>
 								<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
 								<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
-								<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+								<li><a href="https://github.com/totm21" class="icon brands fa-github"><span class="label">Github</span></a></li>
 								<li><a href="#" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 							</ul>
 						</nav>
